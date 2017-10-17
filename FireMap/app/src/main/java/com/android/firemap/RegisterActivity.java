@@ -3,7 +3,6 @@ package com.android.firemap;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
@@ -16,16 +15,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText firstnameUsr;
-    private EditText lastnameUsr;
-    private EditText emailUsr;
-    private EditText psswdUsr;
+    private EditText firstnameUsr, lastnameUsr, emailUsr, psswdUsr;
+    private String firstname, lastname, email, password;
     private Button signupButton;
     private FirebaseAuth mAuth;
+    private FirebaseUser userFb;
+    private DatabaseReference dbRef;
     private ProgressDialog progDialog;
+    private userInfo userI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         signupButton = (Button) findViewById(R.id.buttonRegistrarse);
         mAuth = FirebaseAuth.getInstance();
+        dbRef = FirebaseDatabase.getInstance().getReference();
         progDialog = new ProgressDialog(this);
         initiateEditText();
         signupButton.setOnClickListener(new View.OnClickListener() {
@@ -46,11 +50,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        String firstname = firstnameUsr.getText().toString().trim();
-        String lastname = lastnameUsr.getText().toString().trim();
-        String email = emailUsr.getText().toString().trim();
-        String password = psswdUsr.getText().toString().trim();
-
+        firstname = firstnameUsr.getText().toString().trim();
+        lastname = lastnameUsr.getText().toString().trim();
+        email = emailUsr.getText().toString().trim();
+        password = psswdUsr.getText().toString().trim();
         if (isFirstNameValid(firstname) && isLastNameValid(lastname) &&
                 isEmailValid(email) && isPasswordValid(password)) {
             progDialog.setMessage("Registrando usuario...");
@@ -60,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
+                        saveInformation();
                         Toast.makeText(getBaseContext(), R.string.regist_success_txt,
                                 Toast.LENGTH_LONG).show();
                         startActivity(new Intent(getBaseContext(), WelcomeActivity.class));
@@ -67,11 +71,21 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), R.string.regist_failed_txt,
                                 Toast.LENGTH_LONG).show();
                     } progDialog.dismiss();
+                    firstnameUsr.getText().clear();
+                    lastnameUsr.getText().clear();
+                    emailUsr.getText().clear();
+                    psswdUsr.getText().clear();
                 }
             });
-
         }
+    }
 
+    private void saveInformation() {
+        firstname = firstnameUsr.getText().toString().trim();
+        lastname = lastnameUsr.getText().toString().trim();
+        userInfo userTemp = new userInfo(firstname, lastname);
+        userFb = mAuth.getCurrentUser();
+        dbRef.child(userFb.getUid()).setValue(userTemp);
     }
 
     private boolean isFirstNameValid(String firstname) {
