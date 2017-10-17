@@ -36,7 +36,6 @@ public class RegisterActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         progDialog = new ProgressDialog(this);
         initiateEditText();
-        
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,13 +60,13 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(getBaseContext(), R.string.regist_success_txt, Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(getBaseContext(), WelcomeActivity.class);
-                        startActivity(i);
+                        Toast.makeText(getBaseContext(), R.string.regist_success_txt,
+                                Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getBaseContext(), WelcomeActivity.class));
                     } else {
-                        Toast.makeText(getBaseContext(), R.string.regist_failed_txt, Toast.LENGTH_LONG).show();
-                        progDialog.dismiss();
-                    }
+                        Toast.makeText(getBaseContext(), R.string.regist_failed_txt,
+                                Toast.LENGTH_LONG).show();
+                    } progDialog.dismiss();
                 }
             });
 

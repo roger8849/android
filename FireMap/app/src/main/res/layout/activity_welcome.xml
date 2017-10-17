@@ -6,4 +6,30 @@
     android:layout_height="match_parent"
     tools:context="com.android.firemap.WelcomeActivity">
 
+    <LinearLayout
+        android:layout_width="344dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <TextView
+            android:id="@+id/nameUserTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/user_name_txt"
+            android:textAlignment="center"
+            android:textColor="#18f779"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/emailUserTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="user's email"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
