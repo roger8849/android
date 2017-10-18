@@ -245,6 +245,7 @@ public class LoginActivity extends AppCompatActivity {
             });
         } else {
             Toast.makeText(getBaseContext(), "Password is empty", Toast.LENGTH_LONG).show();
+            showProgress(false);
         }
 
     }

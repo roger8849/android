@@ -54,7 +54,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
         showUsersNameEmail();
 
-
     }
 
     private void showUsersNameEmail() {
@@ -96,6 +95,7 @@ public class WelcomeActivity extends AppCompatActivity {
             mAuth.signOut();
             startActivity(new Intent(getBaseContext(),
                     LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            finish();
         } else if (itemClicked == R.id.menuConfiguracion) {
             startActivity(new Intent(getBaseContext(), SettingsActivity.class));
         } else if (itemClicked == R.id.menuNocturno) {
