@@ -8,7 +8,7 @@ import android.widget.TextView;
  * Created by carlitos on 11/6/17.
  */
 
-public class HolderMessage extends RecyclerView {
+public class HolderMessage extends RecyclerView.ViewHolder {
 
     private TextView nombre;
     private TextView mensaje;
