@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -52,9 +53,14 @@ public class MainActivity extends AppCompatActivity {
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseReference.push().setValue(new messageOut(txtMensaje.getText().toString(),
-                        nombre.getText().toString(), ServerValue.TIMESTAMP));
-                txtMensaje.setText("");
+                if (!txtMensaje.getText().toString().isEmpty()){
+                    databaseReference.push().setValue(new messageOut(txtMensaje.getText().toString(),
+                            "sender", ServerValue.TIMESTAMP));
+                    txtMensaje.setText("");
+                } else {
+                    Toast.makeText(getBaseContext(),"No ha escrito nada",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
